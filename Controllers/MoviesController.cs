@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Vidly.Models;
+using Vidly.Models.ViewModels;
 
 namespace Vidly.Controllers
 {
@@ -12,7 +13,19 @@ namespace Vidly.Controllers
         public IActionResult Random()
         {
             var movie = new Movie() { Name = "Shrek!" };
-            return View(movie);
+            var customers = new List<Customer>
+            {
+                new Customer{Name="Customer 1"},
+                new Customer{Name="Customer 2"}
+            };
+
+            var viewModel = new RandomMovieViewModel
+            {
+                Movie = movie,
+                Customers = customers
+            };
+
+            return View(viewModel);
         }
 
         public IActionResult Edit(int id)
@@ -20,16 +33,22 @@ namespace Vidly.Controllers
             return Content("id=" + id);
         }
 
-        // movies
-        public IActionResult Index(int? pageIndex, string sortBy)
+
+        public IEnumerable<Movie> GetMovies()
         {
-            if (!pageIndex.HasValue)
-                pageIndex = 1;
+            return new List<Movie>
+            {
+                new Movie{ Id=1, Name="Shrek"},
+                new Movie{ Id=2, Name="Wall-e"}
+            };
+        }
 
-            if (string.IsNullOrWhiteSpace(sortBy))
-                sortBy = "Name";
 
-            return Content(String.Format("pageIndex={0}&sortBy={1}", pageIndex, sortBy));
+        // movies
+        public IActionResult Index()
+        {
+            var movies = GetMovies();
+            return View(movies);
         }
 
 
