@@ -27,7 +27,6 @@ namespace Vidly.Controllers
         }
 
 
-
         private IEnumerable<Customer> GetCustomers()
         {
             return new List<Customer>
