@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Vidly.Data;
@@ -9,9 +10,10 @@ using Vidly.Data;
 namespace Vidly.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200614214758_AddNameToMembershipType")]
+    partial class AddNameToMembershipType
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -224,9 +226,6 @@ namespace Vidly.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<DateTime?>("Birthdate")
-                        .HasColumnType("timestamp without time zone");
-
                     b.Property<bool>("IsSubscribedToNewsletter")
                         .HasColumnType("boolean");
 
@@ -243,21 +242,6 @@ namespace Vidly.Migrations
                     b.HasIndex("MembershipTypeId");
 
                     b.ToTable("Customers");
-                });
-
-            modelBuilder.Entity("Vidly.Models.Genre", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Genre");
                 });
 
             modelBuilder.Entity("Vidly.Models.MembershipType", b =>
@@ -287,7 +271,6 @@ namespace Vidly.Migrations
                             Id = (byte)1,
                             DiscountRate = (byte)0,
                             DurationInMonths = (byte)0,
-                            Name = "Pay As You Go",
                             SignUpFee = (short)0
                         },
                         new
@@ -295,7 +278,6 @@ namespace Vidly.Migrations
                             Id = (byte)2,
                             DiscountRate = (byte)10,
                             DurationInMonths = (byte)1,
-                            Name = "Monthly",
                             SignUpFee = (short)30
                         },
                         new
@@ -303,7 +285,6 @@ namespace Vidly.Migrations
                             Id = (byte)3,
                             DiscountRate = (byte)15,
                             DurationInMonths = (byte)3,
-                            Name = "Quarterly",
                             SignUpFee = (short)90
                         },
                         new
@@ -311,38 +292,8 @@ namespace Vidly.Migrations
                             Id = (byte)4,
                             DiscountRate = (byte)20,
                             DurationInMonths = (byte)12,
-                            Name = "Yearly",
                             SignUpFee = (short)300
                         });
-                });
-
-            modelBuilder.Entity("Vidly.Models.Movie", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<DateTime>("DateAdded")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<int>("GenreId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
-
-                    b.Property<int>("NumberInStock")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("ReleaseDate")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("GenreId");
-
-                    b.ToTable("Movies");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -401,15 +352,6 @@ namespace Vidly.Migrations
                     b.HasOne("Vidly.Models.MembershipType", "MembershipType")
                         .WithMany()
                         .HasForeignKey("MembershipTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Vidly.Models.Movie", b =>
-                {
-                    b.HasOne("Vidly.Models.Genre", "Genre")
-                        .WithMany()
-                        .HasForeignKey("GenreId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

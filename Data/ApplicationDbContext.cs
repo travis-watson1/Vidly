@@ -15,6 +15,7 @@ namespace Vidly.Data
         }
 
         public DbSet<Customer> Customers { get; set; }
+        public DbSet<Movie> Movies { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -24,6 +25,7 @@ namespace Vidly.Data
                     new MembershipType
                     {
                         Id = 1,
+                        Name = "Pay As You Go",
                         SignUpFee = 0,
                         DurationInMonths = 0,
                         DiscountRate = 0
@@ -31,6 +33,7 @@ namespace Vidly.Data
                     new MembershipType
                     {
                         Id = 2,
+                        Name = "Monthly",
                         SignUpFee = 30,
                         DurationInMonths = 1,
                         DiscountRate = 10
@@ -38,6 +41,7 @@ namespace Vidly.Data
                     new MembershipType
                     {
                         Id = 3,
+                        Name = "Quarterly",
                         SignUpFee = 90,
                         DurationInMonths = 3,
                         DiscountRate = 15
@@ -45,6 +49,7 @@ namespace Vidly.Data
                     new MembershipType
                     {
                         Id = 4,
+                        Name = "Yearly",
                         SignUpFee = 300,
                         DurationInMonths = 12,
                         DiscountRate = 20
