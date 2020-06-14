@@ -21,6 +21,34 @@ namespace Vidly.Data
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<Genre>().HasData(
+                    new Genre
+                    {
+                        Id = 1,
+                        Name = "Action"
+                    }, 
+                    new Genre
+                    {
+                        Id = 2,
+                        Name = "Thriller"
+                    }, 
+                    new Genre
+                    {
+                        Id = 3,
+                        Name = "Family"
+                    }, 
+                    new Genre
+                    {
+                        Id = 4,
+                        Name = "Romance"
+                    }, 
+                    new Genre
+                    {
+                        Id = 5,
+                        Name = "Comedy"
+                    }
+            );
+
             modelBuilder.Entity<MembershipType>().HasData(
                     new MembershipType
                     {
