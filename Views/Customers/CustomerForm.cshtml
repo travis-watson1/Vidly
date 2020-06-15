@@ -1,10 +1,10 @@
 ﻿@model Vidly.Models.ViewModels.CustomerFormViewModel;
 @{
-    ViewData["Title"] = "New";
+    ViewData["Title"] = @Model.Title;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>New Customer</h1>
+<h1>@Model.Title</h1>
 
 @using (@Html.BeginForm("Save", "Customers"))
 {
