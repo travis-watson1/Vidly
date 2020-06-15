@@ -48,10 +48,20 @@ namespace Vidly.Controllers
         public IActionResult New()
         {
             var genres = _context.Genres.ToList();
-            return View("MovieForm");
+
+            var viewModel = new MovieFormViewModel
+            {
+                Genres = genres
+            };
+
+            return View("MovieForm", viewModel);
         }
 
 
+        public IActionResult Save()
+        {
+            throw new NotImplementedException();
+        }
 
         
         [Route("movies/released/{year:regex(\\d{{4}})}/{month:regex(\\d{{2}}):range(1,12)}")]
@@ -59,8 +69,6 @@ namespace Vidly.Controllers
         {
             return Content(year + "/" + month);
         }
-
-
 
 
     }
