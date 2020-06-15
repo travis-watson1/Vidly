@@ -2,90 +2,88 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
-using System.Security.Policy;
 using System.Threading.Tasks;
 using System.Web.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Vidly.Data;
-using Vidly.Dtos;
 using Vidly.Models;
 
 namespace Vidly.Controllers.Api
 {
-    [Microsoft.AspNetCore.Mvc.Route("api/customers")]
+    [Microsoft.AspNetCore.Mvc.Route("api/[controller]")]
     [ApiController]
-    public class CustomersController : ControllerBase
+    public class MoviesController : ControllerBase
     {
 
         private readonly ApplicationDbContext _context;
 
-        public CustomersController(ApplicationDbContext _context)
+        public MoviesController(ApplicationDbContext _context)
         {
             this._context = _context;
         }
 
-        //GET /api/customers
+        //GET /api/movies
         [Microsoft.AspNetCore.Mvc.HttpGet]
-        public IEnumerable<Customer> GetCustomers()
+        public IEnumerable<Movie> GetMovies()
         {
-            var customers =_context.Customers.ToList();
+            var movies = _context.Movies.ToList();
 
-            return customers;
+            return movies;
         }
 
-        //GET /api/customers/1
+        //GET /api/movies/1
         [Microsoft.AspNetCore.Mvc.HttpGet("{id}")]
-        public async Task<IActionResult> GetCustomer([FromRoute]int id)
+        public async Task<IActionResult> GetMovie([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var customer = await _context.Customers.FindAsync(id);
+            var movie = await _context.Movies.FindAsync(id);
 
-            if (customer == null)
+            if (movie == null)
             {
                 return NotFound();
             }
 
-            return Ok(customer);
+            return Ok(movie);
         }
 
-        //POST /api/customers
+        //POST /api/movies
         [Microsoft.AspNetCore.Mvc.HttpPost]
-        public IActionResult CreateCustomer([Microsoft.AspNetCore.Mvc.FromBody]Customer customer)
+        public IActionResult CreateMovie([Microsoft.AspNetCore.Mvc.FromBody] Movie movie)
         {
             if (!ModelState.IsValid)
             {
                 throw new HttpResponseException(HttpStatusCode.BadRequest);
             }
 
-            _context.Customers.Add(customer);
+            _context.Movies.Add(movie);
             _context.SaveChanges();
 
-            return Ok(customer);
+            return Ok(movie);
         }
 
 
-        // PUT /api/customers/1
+        // PUT /api/movies/1
         [Microsoft.AspNetCore.Mvc.HttpPut("{id}")]
-        public async Task<IActionResult> UpdateCustomer([FromRoute] int id, [Microsoft.AspNetCore.Mvc.FromBody]Customer customer)
+        public async Task<IActionResult> UpdateCustomer([FromRoute] int id,
+            [Microsoft.AspNetCore.Mvc.FromBody] Movie movie)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != customer.Id)
+            if (id != movie.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(customer).State = EntityState.Modified;
+            _context.Entry(movie).State = EntityState.Modified;
 
             try
             {
@@ -93,7 +91,7 @@ namespace Vidly.Controllers.Api
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (customer.Id == 0)
+                if (movie.Id == 0)
                 {
                     return NotFound();
                 }
@@ -107,21 +105,21 @@ namespace Vidly.Controllers.Api
 
         }
 
-        //DELETE /api/customers/1
+        //DELETE /api/movies/1
         [Microsoft.AspNetCore.Mvc.HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCustomer([FromRoute]int id)
+        public async Task<IActionResult> DeleteMovie([FromRoute] int id)
         {
-            var customer = await _context.Customers.FindAsync(id);
+            var movie = await _context.Movies.FindAsync(id);
 
-            if (customer == null)
+            if (movie == null)
             {
                 return NotFound();
             }
 
-            _context.Customers.Remove(customer);
+            _context.Movies.Remove(movie);
             await _context.SaveChangesAsync();
 
-            return Ok(customer);
+            return Ok(movie);
         }
     }
 }
