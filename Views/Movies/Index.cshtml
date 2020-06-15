@@ -4,6 +4,8 @@
 }
 
 <h1>Movies</h1>
+<a asp-controller="Movies" asp-action="New" class="btn btn-primary">New Movie</a>
+
 
 <table class="table table-bordered table-hover">
     <thead>
@@ -16,7 +18,7 @@
         @foreach (var movie in Model)
         {
             <tr>
-                <td>@Html.ActionLink(movie.Name, "Details", "Movies", new { id = movie.Id }, null)</td>
+                <td>@Html.ActionLink(movie.Name, "Edit", "Movies", new { id = movie.Id }, null)</td>
                 <td>@movie.Genre.Name</td>
             </tr>
         }
