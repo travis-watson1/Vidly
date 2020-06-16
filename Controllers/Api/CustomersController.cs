@@ -31,7 +31,7 @@ namespace Vidly.Controllers.Api
         [Microsoft.AspNetCore.Mvc.HttpGet]
         public IEnumerable<Customer> GetCustomers()
         {
-            var customers =_context.Customers.ToList();
+            var customers =_context.Customers.Include(c => c.MembershipType).ToList();
 
             return customers;
         }

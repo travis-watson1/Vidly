@@ -28,7 +28,7 @@ namespace Vidly.Controllers.Api
         [Microsoft.AspNetCore.Mvc.HttpGet]
         public IEnumerable<Movie> GetMovies()
         {
-            var movies = _context.Movies.ToList();
+            var movies = _context.Movies.Include(c => c.Genre).ToList();
 
             return movies;
         }
