@@ -26,46 +26,35 @@ namespace Vidly.Controllers.Api
 
 
         [Microsoft.AspNetCore.Mvc.HttpPost]
-        public IActionResult CreateNewRentals([Microsoft.AspNetCore.Mvc.FromBody] Rental rental)
+        public IActionResult CreateNewRentals(NewRentalDto newRental)
         {
 
-            //var customer = _context.Customers.Single(c => c.Id == newRental.CustomerId);
+            var customer = _context.Customers.Single(c => c.Id == newRental.CustomerId);
 
 
-            //var movies = _context.Movies.Where(m => newRental.MovieIds.Contains(m.Id)).ToList();
+            var movies = _context.Movies.Where(m => newRental.MovieIds.Contains(m.Id)).ToList();
 
-            //foreach (var movie in movies)
-            //{
-            //    if (movie.NumberAvailable == 0)
-            //    {
-            //        return BadRequest("Movie is not available");
-            //    }
-
-            //    movie.NumberAvailable--;
-
-            //    var rental = new Rental
-            //    {
-            //        Customer = customer,
-            //        Movie = movie,
-            //        DateRented = DateTime.Now
-            //    };
-
-            //    _context.Rentals.Add(rental);
-            //}
-
-            //_context.SaveChanges();
-
-            //return Ok();
-
-            if (!ModelState.IsValid)
+            foreach (var movie in movies)
             {
-                throw new HttpResponseException(HttpStatusCode.BadRequest);
+                if (movie.NumberAvailable == 0)
+                {
+                    return BadRequest("Movie is not available");
+                }
+
+                movie.NumberAvailable--;
+
+                var rental = new Rental
+                {
+                    Customer = customer,
+                    Movie = movie,
+                    DateRented = DateTime.Now
+                };
+
+                _context.Rentals.Add(rental);
             }
 
-            _context.Rentals.Add(rental);
-            _context.SaveChanges();
+            return Ok();
 
-            return Ok(rental);
         }
     }
 }
