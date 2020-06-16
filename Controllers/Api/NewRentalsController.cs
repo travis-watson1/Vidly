@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
+using System.Web.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Vidly.Data;
@@ -10,7 +12,7 @@ using Vidly.Models;
 
 namespace Vidly.Controllers.Api
 {
-    [Route("api/[controller]")]
+    [Microsoft.AspNetCore.Mvc.Route("api/[controller]")]
     [ApiController]
     public class NewRentalsController : ControllerBase
     {
@@ -23,37 +25,47 @@ namespace Vidly.Controllers.Api
         }
 
 
-        [HttpPost]
-        public IActionResult CreateNewRentals(NewRentalDto newRental)
+        [Microsoft.AspNetCore.Mvc.HttpPost]
+        public IActionResult CreateNewRentals([Microsoft.AspNetCore.Mvc.FromBody] Rental rental)
         {
 
-            var customer = _context.Customers.Single(c => c.Id == newRental.CustomerId);
+            //var customer = _context.Customers.Single(c => c.Id == newRental.CustomerId);
 
 
-            var movies = _context.Movies.Where(m => newRental.MovieIds.Contains(m.Id)).ToList();
+            //var movies = _context.Movies.Where(m => newRental.MovieIds.Contains(m.Id)).ToList();
 
-            foreach (var movie in movies)
+            //foreach (var movie in movies)
+            //{
+            //    if (movie.NumberAvailable == 0)
+            //    {
+            //        return BadRequest("Movie is not available");
+            //    }
+
+            //    movie.NumberAvailable--;
+
+            //    var rental = new Rental
+            //    {
+            //        Customer = customer,
+            //        Movie = movie,
+            //        DateRented = DateTime.Now
+            //    };
+
+            //    _context.Rentals.Add(rental);
+            //}
+
+            //_context.SaveChanges();
+
+            //return Ok();
+
+            if (!ModelState.IsValid)
             {
-                if (movie.NumberAvailable == 0)
-                {
-                    return BadRequest("Movie is not available");
-                }
-
-                movie.NumberAvailable--;
-
-                var rental = new Rental
-                {
-                    Customer = customer,
-                    Movie = movie,
-                    DateRented = DateTime.Now
-                };
-
-                _context.Rentals.Add(rental);
+                throw new HttpResponseException(HttpStatusCode.BadRequest);
             }
 
+            _context.Rentals.Add(rental);
             _context.SaveChanges();
 
-            return Ok();
+            return Ok(rental);
         }
     }
 }
