@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Vidly.Data;
@@ -20,8 +21,12 @@ namespace Vidly.Controllers
         }
         public ViewResult Index()
         {
-            //var customers = _context.Customers.Include(c => c.MembershipType).ToList();
-            return View();
+            if (User.IsInRole(RoleName.CanManageMovies))
+            {
+                return View("Index");
+            }
+
+            return View("ReadOnlyList");
         }
 
 
@@ -34,6 +39,8 @@ namespace Vidly.Controllers
 
             return View(customer);
         }
+
+        [Authorize(Roles = RoleName.CanManageMovies)]
 
         public IActionResult New()
         {
@@ -49,6 +56,8 @@ namespace Vidly.Controllers
         
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = RoleName.CanManageMovies)]
+
         public IActionResult Save(Customer customer)
         {
             if (!ModelState.IsValid)
@@ -78,6 +87,8 @@ namespace Vidly.Controllers
 
             return RedirectToAction("Index", "Customers");
         }
+
+        [Authorize(Roles = RoleName.CanManageMovies)]
 
         public IActionResult Edit(int id)
         {
